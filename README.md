@@ -5,7 +5,7 @@
 **Live:** [crypto-course-landing-tau.vercel.app](https://crypto-course-landing-tau.vercel.app)
 
 <p align="center">
-  <img src="assets/preview.webp" alt="master-crypto — the live site" width="100%">
+  <img src="assets/preview.webp" alt="MasterCrypto — hero of the live site" width="100%">
 </p>
 
 `HTML` · `CSS` · `vanilla JS` · `GSAP 3.12.5` · `ScrollTrigger` · `Lenis 1.1.14` · `Vercel`
@@ -14,7 +14,7 @@
 
 ## Shipping the entire product as one HTML file
 
-The deployed product is a single `index.html` — 312,073 bytes, 7,320 lines, inline `<style>` and inline vanilla JavaScript. The repo tracks five files total: `index.html`, `logo.png`, `vercel.json`, `.gitignore`, `README.md`. No `package.json`, no bundler, no framework, no CI workflow. Vercel serves the file as a static asset; a `git push` to `main` is the deploy path. Nothing sits between the committed bytes and the served bytes.
+The deployed product is a single `index.html` — 312,073 bytes, 7,320 lines, inline `<style>` and inline vanilla JavaScript. The repo tracks five files total: `index.html`, `logo.png`, `vercel.json`, `.gitignore`, `README.md`. No `package.json`, no bundler, no framework, no CI workflow. Vercel serves the committed file as a static asset; nothing sits between the committed bytes and the served bytes.
 
 ## Isolating numerals so digits survive the RTL flow
 
@@ -22,6 +22,7 @@ Hebrew runs right-to-left; Latin digits, currency and percentages run left-to-ri
 
 ```css
 .num, .mono {
+  font-family: var(--font-mono);
   font-feature-settings: 'tnum' 1;
   direction: ltr;
   unicode-bidi: isolate;
@@ -42,7 +43,7 @@ A reduce-motion bridge mirrors *both* the OS `prefers-reduced-motion` setting an
 
 ## Constraining third-party scripts with a CSP allowlist
 
-`vercel.json` sets a Content-Security-Policy response header whose `script-src` allows `'self'`, `'unsafe-inline'` — the page's JavaScript is inline, so the policy has to permit it — and three named hosts, with `object-src 'none'` and `base-uri 'self'`. The allowlist constrains which third-party origins can serve script, not what inline script may run. All three external scripts are Subresource-Integrity pinned with `sha384` hashes, so a tampered CDN response fails closed instead of executing.
+`vercel.json` sets a Content-Security-Policy response header whose `script-src` allows `'self'`, `'unsafe-inline'` — the page's JavaScript is inline, so the policy has to permit it — and three named hosts, with `object-src 'none'` and `base-uri 'self'`. The allowlist constrains which third-party origins can serve script, not what inline script may run. The page loads four external scripts. The three CDN libraries — GSAP, ScrollTrigger, Lenis — are Subresource-Integrity pinned with `sha384` hashes, so a tampered CDN response fails closed instead of executing; the fourth, the accessibility widget, is served from its own allowlisted host without a pin.
 
 Accessibility ships as a shared widget loaded by script tag rather than a per-site panel, so it is maintained in one place across projects. The page carries 104 `aria-` attributes and a `.skip-link` to `#main-content`.
 
@@ -52,10 +53,24 @@ Commit `b358e56` removed invented reviews and instructor credentials and moved t
 
 ## How it was verified
 
-- **2026-08-15** — the live URL returns bytes identical to the committed `index.html`: SHA-256 `e56351ec…9eb6`, 312,073 bytes on both sides.
+- **2026-08-31** (first checked 2026-08-15) — the live URL returns bytes identical to the committed `index.html`: SHA-256 `e56351ec…9eb6`, 312,073 bytes on both sides.
 - The CSP header is present on the live response (`server: Vercel`) and matches `vercel.json`.
 - Sections in document order: chain showcase, curriculum, instructor, pricing, testimonials, FAQ, enroll.
 
+## Screenshots
+
+<p align="center">
+  <img src="assets/chain-showcase.webp" alt="Blockchain showcase section — the mc-chain engine's linked block cards on the dark canvas" width="100%">
+</p>
+
+<p align="center">
+  <img src="assets/candlestick-chart.webp" alt="Draw-on-scroll BTC/USD candlestick chart — a left-to-right time axis inside the right-to-left page" width="100%">
+</p>
+
+<p align="center">
+  <img src="assets/mobile-home.webp" alt="Mobile home view at 390 px — hero, live price strip and the accessibility widget" width="45%">
+</p>
+
 ---
 
-Built by [@ArielShemesh1999](https://github.com/ArielShemesh1999). Source is in a private repository.
+Source is private. Built by [@shear559](https://github.com/shear559).
