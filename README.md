@@ -14,7 +14,7 @@
 
 ## Shipping the entire product as one HTML file
 
-The deployed product is a single `index.html` — 312,073 bytes, 7,320 lines, inline `<style>` and inline vanilla JavaScript. The repo tracks five files total: `index.html`, `logo.png`, `vercel.json`, `.gitignore`, `README.md`. No `package.json`, no bundler, no framework, no CI workflow. Vercel serves the committed file as a static asset; nothing sits between the committed bytes and the served bytes.
+The page keeps its layout, styles and vanilla JavaScript in `index.html`, with a separate SVG brand mark and Vercel configuration. There is no package manager, bundler or framework. Vercel serves the static page directly.
 
 ## Isolating numerals so digits survive the RTL flow
 
@@ -33,7 +33,7 @@ Hebrew runs right-to-left; Latin digits, currency and percentages run left-to-ri
 
 ## Degrading five motion engines to a static page
 
-Five namespaced, self-contained engines: `mc-net` (hero lattice canvas), `mc-coincard` (3D tilt glass cards), `mc-chain` (blockchain showcase), `mc-candles` (draw-on-scroll candlestick), `mc-ticker` (RTL marquee).
+Five namespaced, self-contained engines: `mc-net` (hero lattice canvas), `mc-coincard` (tilting course-concept cards), `mc-chain` (blockchain showcase), `mc-candles` (draw-on-scroll candlestick), `mc-ticker` (RTL marquee).
 
 Each obeys one contract — GPU-only transforms, `requestAnimationFrame` loops paused when the section leaves the viewport (`IntersectionObserver`) or the tab is hidden (`visibilitychange`), and a fully-formed static fallback.
 
@@ -45,17 +45,19 @@ A reduce-motion bridge mirrors *both* the OS `prefers-reduced-motion` setting an
 
 `vercel.json` sets a Content-Security-Policy response header whose `script-src` allows `'self'`, `'unsafe-inline'` — the page's JavaScript is inline, so the policy has to permit it — and three named hosts, with `object-src 'none'` and `base-uri 'self'`. The allowlist constrains which third-party origins can serve script, not what inline script may run. The page loads four external scripts. The three CDN libraries — GSAP, ScrollTrigger, Lenis — are Subresource-Integrity pinned with `sha384` hashes, so a tampered CDN response fails closed instead of executing; the fourth, the accessibility widget, is served from its own allowlisted host without a pin.
 
-Accessibility ships as a shared widget loaded by script tag rather than a per-site panel, so it is maintained in one place across projects. The page carries 104 `aria-` attributes and a `.skip-link` to `#main-content`.
+Accessibility ships as a shared widget loaded by script tag rather than a per-site panel, so it is maintained in one place across projects. A `.skip-link` leads to `#main-content`; mixed-script labels carry direction and language annotations.
 
-## Replacing named reviews and credentials with placeholders
+## Following the learning journey
 
-Commit `b358e56` removed invented reviews and instructor credentials and moved the demo identity and contact details to placeholders (`ישראל ישראלי`, `050-000-0000`, `wa.me/972500000000`). The aggregate figures still on the page — graduate counts, rating, completion rate, years taught — are unverified demo copy, not measured results. Design holds a single accent, `--purple: #5546D6`; the `#4400aa` in the codebase is only the high-contrast accessibility override, not a second brand color.
+The page starts with what cryptocurrency is, shows a transaction moving through a blockchain, and introduces the tools before explaining buying, KYC, selling and cashing out. Risk and market-reading sections lead into the course curriculum. Automation remains in the curriculum, without a duplicate trading-bot showcase.
+
+Market prices and charts are labelled as simulations. Invented graduate counts, ratings, completion rates and instructor credentials have been removed. The enrollment section explicitly says online registration is not connected; pricing links lead to that status instead of an inactive contact channel.
 
 ## How it was verified
 
-- **2026-08-31** (first checked 2026-08-15) — the live URL returns bytes identical to the committed `index.html`: SHA-256 `e56351ec…9eb6`, 312,073 bytes on both sides.
+- **2026-09-07** — the live HTML matched the committed `index.html` at `85881ca`. Chromium loaded the current learning journey without page errors or failed network requests.
 - The CSP header is present on the live response (`server: Vercel`) and matches `vercel.json`.
-- Sections in document order: chain showcase, curriculum, instructor, pricing, testimonials, FAQ, enroll.
+- The live page shows the simulated-market label and the explicit enrollment status.
 
 ## Screenshots
 
@@ -68,7 +70,7 @@ Commit `b358e56` removed invented reviews and instructor credentials and moved t
 </p>
 
 <p align="center">
-  <img src="assets/mobile-home.webp" alt="Mobile home view at 390 px — hero, live price strip and the accessibility widget" width="45%">
+  <img src="assets/mobile-home.webp" alt="Mobile home view at 390 px — course introduction, simulated market strip and accessibility widget" width="45%">
 </p>
 
 ---
